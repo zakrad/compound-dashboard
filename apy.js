@@ -61,5 +61,8 @@ async function calculateCompApy(cToken, ticker, underlyingDecimals) {
     compPrice = compPrice / 1e6;
     underlyingPrice = underlyingPrice / 1e6;
     exchangeRate = +exchangeRate.toString() / ethMentissa;
-    
+    totalSupply = +totalSupply().toString() * exchangeRate * underlyingPrice / Math.pow(10, underlyingDecimals);
+    const compPerDay = compSpeed * blocksPerDay;
+
+    return 100 * (compPrice * compPerDay / totalSupply) * 365
 }
