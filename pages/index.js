@@ -1,14 +1,14 @@
 import Head from 'next/head'
-import Image from 'next/image'
 import styles from '../styles/Home.module.css'
-import Compound from '@compound-finance/compound-js;'
+import Compound from '@compound-finance/compound-js';
 import calculateApy from '../apy.js';
 
 export default function Home({ apys }) {
   const formatPercent = number =>
     `${new Number(number).toFixed(2)}%`
+
   return (
-    <div className="container">
+    <div className='container'>
       <Head>
         <title>Compound dashboard</title>
         <link rel="icon" href="/favicon.ico" />
@@ -22,12 +22,14 @@ export default function Home({ apys }) {
           </div>
         </div>
       </div>
+
+
       <table className="table">
         <thead>
           <tr>
             <th>Ticker</th>
             <th>Supply APY</th>
-            <th>Comp APY</th>
+            <th>COMP APY</th>
             <th>Total APY</th>
           </tr>
         </thead>
@@ -38,7 +40,6 @@ export default function Home({ apys }) {
                 <img
                   src={`img/${apy.ticker.toLowerCase()}.png`}
                   style={{ width: 25, height: 25, marginRight: 10 }}
-                  alt={`${apy.ticker}`}
                 />
                 {apy.ticker.toUpperCase()}
               </td>
@@ -61,7 +62,7 @@ export default function Home({ apys }) {
 
 export async function getServerSideProps(context) {
   const apys = await Promise.all([
-    calculateApy(Compound.cDai, 'DAI'),
+    calculateApy(Compound.cDAI, 'DAI'),
     calculateApy(Compound.cUSDC, 'USDC'),
     calculateApy(Compound.cUSDT, 'USDT'),
   ]);
@@ -69,6 +70,6 @@ export async function getServerSideProps(context) {
   return {
     props: {
       apys
-    }
+    },
   }
 }
