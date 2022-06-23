@@ -22,9 +22,9 @@ async function calculateSupplyApy(cToken) {
 }
 
 async function calculateCompApy(cToken, ticker, underlyingDecimals) {
-    let compSpeed = await Compound.eth.read(
+    let compSupplySpeed = await Compound.eth.read(
         comptroller,
-        'function compSpeeds(address cToken) public returns (uint)',
+        'function compSupplySpeeds(address cToken) public returns (uint)',
         [cToken],
         { provider }
     );
@@ -58,11 +58,11 @@ async function calculateCompApy(cToken, ticker, underlyingDecimals) {
     );
 
     exchangeRate = +exchangeRate.toString() / ethMantissa;
-    compSpeed = compSpeed / 1e18; // COMP has 18 decimal places
+    compSupplySpeed = compSupplySpeed / 1e18; // COMP has 18 decimal places
     compPrice = compPrice / 1e6;  // price feed is USD price with 6 decimal places
     underlyingPrice = underlyingPrice / 1e6;
     totalSupply = (+totalSupply.toString() * exchangeRate * underlyingPrice) / (Math.pow(10, underlyingDecimals));
-    const compPerDay = compSpeed * blocksPerDay;
+    const compPerDay = compSupplySpeed * blocksPerDay;
 
     return 100 * (compPrice * compPerDay / totalSupply) * 365;
 }
